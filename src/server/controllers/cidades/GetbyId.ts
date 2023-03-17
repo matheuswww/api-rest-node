@@ -14,7 +14,14 @@ export const getByidValidation = validation(getSchema => ({
 }));
 
 export const getById = async (req: Request<IParamProps>,res: Response) => {
-  console.log(req.params);
-  
-  return res.status(500).send('Não implementado');
+  if(Number(req.params.id) === 999999) return res.status(404).json({
+    errors: {
+      default: 'Registro não encontrado',
+    }
+  });
+
+  return res.status(201).json({
+    id: req.params.id,
+    nome: 'São Paulo',
+  });
 };

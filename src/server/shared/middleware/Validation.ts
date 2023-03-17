@@ -34,6 +34,6 @@ export const validation:TValidation = (getAllSchemas) => async (req,res,next) =>
   if(Object.entries(errosResult).length === 0) {
     return next();
   } else {
-    return res.status(400).json({erros:errosResult});
+    return res.status(400).json({errors:errosResult});
   }
 };
