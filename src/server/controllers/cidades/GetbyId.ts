@@ -16,7 +16,7 @@ export const getByidValidation = validation(getSchema => ({
 export const getById = async (req: Request<IParamProps>,res: Response) => {
   if(Number(req.params.id) === 999999) return res.status(404).json({
     errors: {
-      default: 'Registro não encontrado',
+      default: 'Registro não enconddtrado',
     }
   });
 
