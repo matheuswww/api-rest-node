@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as yup from 'yup';
+import { ICidade } from '../../database/models';
 import { validation } from '../../shared/middleware';
 
 
@@ -7,9 +8,7 @@ interface IParamsProps {
   id?:number
 }
 
-interface IBodyProps {
-  nome: string
-}
+interface IBodyProps extends Omit<ICidade,'id'> {}
 
 export const updateByIdvalidation = validation(getSchema => ({
   body: getSchema<IBodyProps>(yup.object().shape({
