@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import * as yup from 'yup';
+import { CidadesProvider } from '../../database/providers/cidades';
 import { validation } from '../../shared/middleware/Validation';
 
 interface IQueryProps {
+  id?: number;
   page?: number;
   limit?: number;
   filter?: string;
@@ -10,6 +12,7 @@ interface IQueryProps {
 
 export const getAllValidation = validation((getSchema) => ({
   query: getSchema<IQueryProps>(yup.object().shape({
+    id: yup.number().optional().moreThan(0),
     page: yup.number().optional().moreThan(0),
     limit: yup.number().optional().moreThan(0),
     filter: yup.string().optional(),
@@ -17,13 +20,40 @@ export const getAllValidation = validation((getSchema) => ({
 }));
 
 export const getValidation = async (req:Request<{},{},{},IQueryProps>,res:Response) => {
-  res.setHeader('access-control-expose-headers','x-total-count');
-  res.setHeader('x-total-count',1);
+  //validates that the query is correct,is necessary because in yup the values is optional,like this,no validing the query;
+  const correctValues:string[] = ['id','page','limit','filter'];
+  const validation:string[] | [] = Object.keys(req.query).map((item) => {
+    const errors:boolean = correctValues.includes(item);
+    if(!errors) return item;
+    return '';
+  }).filter((item) => item !== '');
+  
+  if(validation.length) {
+    const body = validation.map((item) => {
+      return { ...{ wrongPropriety: `The propriety '${item}' do not exists in query` },};
+    });
+    return res.status(400).json({
+      errors: {
+        body,
+      },
+    });
+  }
+  
+  const result = await CidadesProvider.getAll(req.query.page || 1,req.query.limit || 7,req.query.filter || '',Number(req.query.id) || 0);
+  const count = await CidadesProvider.count(req.query.filter);
 
-  return res.status(200).json([
-    {
-      id: 1,
-      nome: 'São Paulo',
-    }
-  ]);
+  if(result instanceof Error) {
+    return res.status(500).json({
+      errors: {default: result.message},
+    });
+  } else if(count instanceof Error){
+    return res.status(500).json({
+      errors: { default:count.message },
+    });
+  }
+
+  res.setHeader('access-control-expose-headers','x-total-count');
+  res.setHeader('x-total-count',count);
+
+  return res.status(200).json(result);
 };

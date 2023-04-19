@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import * as yup from 'yup';
+import { EdefaultMessages } from '../../database/Enums-cidades';
 import { ICidade } from '../../database/models';
+import { CidadesProvider } from '../../database/providers/cidades';
 import { validation } from '../../shared/middleware';
 
 
@@ -20,11 +22,29 @@ export const updateByIdvalidation = validation(getSchema => ({
 }));
 
 export const updateById = async (req: Request<IParamsProps,{},IBodyProps>,res:Response) => {
-  if(Number(req.params.id) === 999999) return res.status(400).json({
+  if(!req.params.id) return res.status(400).json({
     errors:{
-      default: 'Registro não encontrado',
+      default: 'O parâmetro "id" precisa ser informado.',
     }
   });
 
-  return res.status(204).send('id: Updated');
+  const result = await CidadesProvider.updateByid(req.params.id,req.body);
+  
+  if(result instanceof Error) {
+    if(result.message === EdefaultMessages.notFound) {
+      return res.status(400).json({
+        errors: {
+          default: result.message,
+        }
+      });
+    } else {
+      return res.status(500).json({
+        errors: {
+          default: result.message,
+        }
+      });
+    }
+  }
+
+  return res.status(204).json(result);
 };

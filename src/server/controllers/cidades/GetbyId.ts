@@ -1,6 +1,8 @@
 import { validation } from '../../shared/middleware';
 import * as yup from 'yup';
 import { Request, Response } from 'express';
+import { CidadesProvider } from '../../database/providers/cidades';
+import { EdefaultMessages } from '../../database/Enums-cidades';
 
 
 interface IParamProps {
@@ -14,14 +16,28 @@ export const getByidValidation = validation(getSchema => ({
 }));
 
 export const getById = async (req: Request<IParamProps>,res: Response) => {
-  if(Number(req.params.id) === 999999) return res.status(404).json({
+  if(!req.params.id) return res.status(400).json({
     errors: {
-      default: 'Registro não enconddtrado',
+      default: 'O parâmetro "id" precisa ser informado',
     }
   });
 
-  return res.status(201).json({
-    id: req.params.id,
-    nome: 'São Paulo',
-  });
+  const result = await CidadesProvider.getByid(req.params.id);
+
+  if(result instanceof Error) {
+    if(result.message === EdefaultMessages.notFound) {
+      return res.status(404).json({
+        errors: {
+          default: result.message,
+        }
+      });
+    } else {
+      return res.status(500).json({
+        errors: {
+          default: result.message,
+        }
+      });
+    }
+  }
+  return res.status(200).json(result);
 };
