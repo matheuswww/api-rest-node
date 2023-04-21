@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  app:
+    image: api-rest-node:1.0
+    build: .
+    volumes:
+      - ./src/:/app/src
+      - ./:/app
+    ports:
+      - "8080:3333"
+    networks:
+      api-rest-node-network:
+        aliases:
+          - api-rest-node:1.0
+    depends_on:
+      - db
+    environment:
+      DB_PASSWORD: node-api
+      DB_NAME: api_rest_node
+  
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: node-api
+      MYSQL_PASSWORD: node-api
+      MYSQL_DATABASE: api_rest_node
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      api-rest-node-network:
+        aliases:
+          - db
+
+networks:
+  api-rest-node-network:
+    driver: bridge
+
+volumes:
+  db_data:
