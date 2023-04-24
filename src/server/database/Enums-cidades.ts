@@ -1,5 +1,6 @@
 export enum ETableNames {
   cidade = 'cidade',
+  pessoa = 'pessoa',
 }
 
 export enum EdefaultMessages {

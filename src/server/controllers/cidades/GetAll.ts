@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import * as yup from 'yup';
 import { CidadesProvider } from '../../database/providers/cidades';
 import { validation } from '../../shared/middleware/Validation';
+import { ValidateQuery } from '../funcs/ValidateQuery';
 
 interface IQueryProps {
   id?: number;
@@ -19,25 +20,9 @@ export const getAllValidation = validation((getSchema) => ({
   })),
 }));
 
-export const getValidation = async (req:Request<{},{},{},IQueryProps>,res:Response) => {
+export const getAll = async (req:Request<{},{},{},IQueryProps>,res:Response) => {
   //validates that the query is correct,is necessary because in yup the values is optional,like this,no validing the query;
-  const correctValues:string[] = ['id','page','limit','filter'];
-  const validation:string[] | [] = Object.keys(req.query).map((item) => {
-    const errors:boolean = correctValues.includes(item);
-    if(!errors) return item;
-    return '';
-  }).filter((item) => item !== '');
-  
-  if(validation.length) {
-    const body = validation.map((item) => {
-      return { ...{ wrongPropriety: `The propriety '${item}' do not exists in query` },};
-    });
-    return res.status(400).json({
-      errors: {
-        body,
-      },
-    });
-  }
+  ValidateQuery(req,res,['id','page','limit','filter']);
   
   const result = await CidadesProvider.getAll(req.query.page || 1,req.query.limit || 7,req.query.filter || '',Number(req.query.id) || 0);
   const count = await CidadesProvider.count(req.query.filter);
