@@ -1,6 +1,6 @@
 import { Knex } from '../../knex';
 import { IPessoa } from '../../models';
-import { ETableNames } from '../../Enums-cidades';
+import { ETableNames } from '../../Enums';
 
 
 export const create = async (pessoa: Omit<IPessoa,'id'>) => {

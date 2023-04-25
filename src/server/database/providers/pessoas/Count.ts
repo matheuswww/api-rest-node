@@ -1,4 +1,4 @@
-import { EdefaultMessages, ETableNames } from '../../Enums-cidades';
+import { EdefaultMessages, ETableNames } from '../../Enums';
 import { Knex } from '../../knex';
 
 

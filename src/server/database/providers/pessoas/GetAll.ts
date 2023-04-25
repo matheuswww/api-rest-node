@@ -1,4 +1,4 @@
-import { ETableNames } from '../../Enums-cidades';
+import { ETableNames } from '../../Enums';
 import { Knex } from '../../knex';
 import { IPessoa } from '../../models';
 

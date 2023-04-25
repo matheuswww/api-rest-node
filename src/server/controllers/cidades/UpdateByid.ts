@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as yup from 'yup';
-import { EdefaultMessages } from '../../database/Enums-cidades';
+import { EdefaultMessages } from '../../database/Enums';
 import { ICidade } from '../../database/models';
 import { CidadesProvider } from '../../database/providers/cidades';
 import { validation } from '../../shared/middleware';

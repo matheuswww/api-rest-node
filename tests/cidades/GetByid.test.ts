@@ -1,4 +1,4 @@
-import { EdefaultMessages } from '../../src/server/database/Enums-cidades';
+import { EdefaultMessages } from '../../src/server/database/Enums';
 import { testServer } from '../jest.setup';
 
 describe('Cidades - getById',() => {

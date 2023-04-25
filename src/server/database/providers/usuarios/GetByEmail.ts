@@ -1,10 +1,9 @@
 import { EdefaultMessages, ETableNames } from '../../Enums';
 import { Knex } from '../../knex';
-import { ICidade } from '../../models';
-
-export const getByid = async(id:number):Promise<ICidade | Error> => {
+import { IUsuario } from '../../models';
+export const getByEmail = async(email:string):Promise<IUsuario | Error> => {
   try {
-    const result = await Knex(ETableNames.cidade).select('*').where('id','=',id).first();
+    const result = await Knex(ETableNames.usuario).select('*').where('email','=',email).first();
 
     if(result) return result;
 

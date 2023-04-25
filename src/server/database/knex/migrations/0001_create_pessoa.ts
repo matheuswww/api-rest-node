@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { ETableNames } from '../../Enums-cidades';
+import { ETableNames } from '../../Enums';
 
 export async function up(knex: Knex) {
   return knex

@@ -2,7 +2,7 @@ import { validation } from '../../shared/middleware';
 import * as yup from 'yup';
 import { Request, Response } from 'express';
 import { CidadesProvider } from '../../database/providers/cidades';
-import { EdefaultMessages } from '../../database/Enums-cidades';
+import { EdefaultMessages } from '../../database/Enums';
 
 
 interface IParamProps {

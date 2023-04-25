@@ -1,4 +1,4 @@
-import { ETableNames } from '../../Enums-cidades';
+import { ETableNames } from '../../Enums';
 import { Knex } from '../../knex';
 
 export const count = async (filter = ''):Promise<number | Error> => {
