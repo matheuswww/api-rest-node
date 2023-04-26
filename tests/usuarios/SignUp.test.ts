@@ -2,7 +2,7 @@ import { testServer } from '../jest.setup';
 
 
 describe('Usuário - SignUp', () => {
-  it('Cadastra usuário 1', async () => {
+  it('Register user 2', async () => {
     const res1 = await testServer
       .post('/cadastrar')
       .send({
@@ -13,7 +13,7 @@ describe('Usuário - SignUp', () => {
     expect(res1.statusCode).toEqual(201);
     expect(typeof res1.body).toEqual('number');
   });
-  it('Cadastra usuário 2', async () => {
+  it('Register user 2', async () => {
     const res1 = await testServer
       .post('/cadastrar')
       .send({
@@ -24,7 +24,7 @@ describe('Usuário - SignUp', () => {
     expect(res1.statusCode).toEqual(201);
     expect(typeof res1.body).toEqual('number');
   });
-  it('Erro ao cadastrar um usuário com email duplicado', async () => {
+  it('Error in register with a duplicated email', async () => {
     const res1 = await testServer
       .post('/cadastrar')
       .send({
@@ -45,7 +45,7 @@ describe('Usuário - SignUp', () => {
     expect(res2.statusCode).toEqual(500);
     expect(res2.body).toHaveProperty('errors.default');
   });
-  it('Erro ao cadastrar um usuário sem email', async () => {
+  it('Error in register without a email', async () => {
     const res1 = await testServer
       .post('/cadastrar')
       .send({
@@ -56,7 +56,7 @@ describe('Usuário - SignUp', () => {
     expect(res1.statusCode).toEqual(400);
     expect(res1.body).toHaveProperty('errors.body.email');
   });
-  it('Erro ao cadastrar um usuário sem nome', async () => {
+  it('Error in register without a valid name', async () => {
     const res1 = await testServer
       .post('/cadastrar')
       .send({
@@ -67,7 +67,7 @@ describe('Usuário - SignUp', () => {
     expect(res1.statusCode).toEqual(400);
     expect(res1.body).toHaveProperty('errors.body.nome');
   });
-  it('Erro ao cadastrar um usuário sem senha', async () => {
+  it('Error in register without a password', async () => {
     const res1 = await testServer
       .post('/cadastrar')
       .send({
@@ -78,7 +78,7 @@ describe('Usuário - SignUp', () => {
     expect(res1.statusCode).toEqual(400);
     expect(res1.body).toHaveProperty('errors.body.senha');
   });
-  it('Erro ao cadastrar um usuário com email inválido', async () => {
+  it('Error in register without a valid email', async () => {
     const res1 = await testServer
       .post('/cadastrar')
       .send({
@@ -89,7 +89,7 @@ describe('Usuário - SignUp', () => {
     expect(res1.statusCode).toEqual(400);
     expect(res1.body).toHaveProperty('errors.body.email');
   });
-  it('Erro ao cadastrar um usuário com senha muito pequena', async () => {
+  it('Error in register with a short password', async () => {
     const res1 = await testServer
       .post('/cadastrar')
       .send({
@@ -100,7 +100,7 @@ describe('Usuário - SignUp', () => {
     expect(res1.statusCode).toEqual(400);
     expect(res1.body).toHaveProperty('errors.body.senha');
   });
-  it('Erro ao cadastrar um usuário com nome muito pequeno', async () => {
+  it('Error in register with a short name', async () => {
     const res1 = await testServer
       .post('/cadastrar')
       .send({

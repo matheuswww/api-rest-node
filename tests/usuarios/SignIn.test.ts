@@ -9,7 +9,7 @@ describe('Usuários - SignIn',() => {
     });
   });
 
-  it('Faz login', async () => {
+  it('Make login', async () => {
     const res1 = await testServer
       .post('/entrar')
       .send({
@@ -19,7 +19,7 @@ describe('Usuários - SignIn',() => {
     expect(res1.statusCode).toEqual(201);
     expect(res1.body).toHaveProperty('accessToken');
   });
-  it('Senha errada', async () => {
+  it('Wrong Password', async () => {
     const res1 = await testServer
       .post('/entrar')
       .send({
@@ -29,7 +29,7 @@ describe('Usuários - SignIn',() => {
     expect(res1.statusCode).toEqual(403);
     expect(res1.body).toHaveProperty('errors.default');
   });
-  it('Email errado', async () => {
+  it('Wrong Email', async () => {
     const res1 = await testServer
       .post('/entrar')
       .send({
@@ -39,7 +39,7 @@ describe('Usuários - SignIn',() => {
     expect(res1.statusCode).toEqual(403);
     expect(res1.body).toHaveProperty('errors.default');
   });
-  it('Formato de email inválido', async () => {
+  it('Invalid Email format', async () => {
     const res1 = await testServer
       .post('/entrar')
       .send({
@@ -49,7 +49,7 @@ describe('Usuários - SignIn',() => {
     expect(res1.statusCode).toEqual(400);
     expect(res1.body).toHaveProperty('errors.body.email');
   });
-  it('Senha muito pequena', async () => {
+  it('Short Password', async () => {
     const res1 = await testServer
       .post('/entrar')
       .send({
@@ -59,7 +59,7 @@ describe('Usuários - SignIn',() => {
     expect(res1.statusCode).toEqual(400);
     expect(res1.body).toHaveProperty('errors.body.senha');
   });
-  it('Não informado a senha', async () => {
+  it('Password dont informed', async () => {
     const res1 = await testServer
       .post('/entrar')
       .send({
@@ -68,7 +68,7 @@ describe('Usuários - SignIn',() => {
     expect(res1.statusCode).toEqual(400);
     expect(res1.body).toHaveProperty('errors.body.senha');
   });
-  it('Não informado email', async () => {
+  it('Email dont informed', async () => {
     const res1 = await testServer
       .post('/entrar')
       .send({

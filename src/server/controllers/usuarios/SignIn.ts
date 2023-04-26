@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { UsuariosProvider } from '../../database/providers/usuarios';
 import { EdefaultMessages } from '../../database/Enums';
 import { IUsuario } from '../../database/models';
+import { JWTService, PasswordCrypto } from '../../shared/services';
 
 interface IBodyProps extends Omit<IUsuario,'id' | 'nome'> {}
 
@@ -35,15 +36,24 @@ export const signIn = async (req:Request<{},{},IBodyProps>,res:Response) => {
     }
   }
 
-  if(result.senha !== senha) {
+  const passwordMatch = await PasswordCrypto.verifyPassword(senha,result.senha);
+
+  if(!passwordMatch) {
     return res.status(403).json({
       errors: {
         default: 'Email ou senha são inválidos',
       }
     });
   } else {
+    const accessToken = JWTService.sign({uid: result.id});
+    if(accessToken === 'JWT_SECRET_NOT_FOUND') {
+      return res.status(500).json({
+        accessToken: 'Erro ao gerar o token de acesso',
+      });
+    }
+
     return res.status(201).json({
-      accessToken: 'teste.teste.teste',
+      accessToken: accessToken,
     });
   }
 };
